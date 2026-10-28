@@ -11,14 +11,14 @@
     "stok": true
   },
   {
-    "ad": "Premium Hoodie",
+    "ad": "Premium Kazak",
     "kategori": "ust",
     "aciklama": "Yeni sezon",
-    "fiyat": 1500,
-    "indirimliFiyat": 1200,
-    "gorsel": "",
+    "fiyat": 1000,
+    "indirimliFiyat": null,
+    "gorsel": "https://cdn.beymen.com/mnresize/596/830/productimages/h5yfumj0.zxy_IMG_01_2110099658926.jpg",
     "etiket": "YENİ",
-    "link": "",
+    "link": "https://www.beymen.com/tr/p_polo-ralph-lauren-kamel-orgu-dokulu-kazak_1626449",
     "stok": true
   }
 ]

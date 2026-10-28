@@ -90,6 +90,21 @@ a.add{display:inline-block;text-decoration:none;text-align:center}
 .oldprice{color:#777;font-weight:400;font-size:12px;margin-right:4px}
 .tag.soldout{background:#555;color:#fff}
 .productbottom .price{line-height:1.2}
+
+/* fotoğraf galerisi */
+.tag{z-index:2}
+.slides{position:absolute;inset:0}
+.slides img{position:absolute;inset:0;opacity:0;transition:opacity .25s}
+.slides img.on{opacity:1}
+.nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.55);color:#fff;font-size:18px;line-height:1;cursor:pointer;opacity:0;transition:opacity .2s;padding:0}
+.nav.prev{left:8px}.nav.next{right:8px}
+.productimg:hover .nav{opacity:1}
+@media(hover:none){.nav{opacity:.85}}
+.dots{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:3;pointer-events:none}
+.dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35)}
+.dots i.on{background:#fff}
+
+.productinfo .lowstock{color:#ff7a6b;font-size:11px;font-weight:600;letter-spacing:.3px;margin-top:5px}
 </style>
 </head>
 <body>
@@ -134,6 +149,7 @@ function update(){const q=search.value.toLocaleLowerCase('tr');products.forEach(
 filters.forEach(b=>b.addEventListener('click',()=>{filters.forEach(x=>x.classList.remove('active'));b.classList.add('active');category=b.dataset.cat;update()}));search.addEventListener('input',update);
 function whatsapp(message){if(!WHATSAPP_NUMBER){const n=document.getElementById('notice');n.classList.add('show');setTimeout(()=>n.classList.remove('show'),3000);return}window.open('https://wa.me/'+WHATSAPP_NUMBER+'?text='+encodeURIComponent(message),'_blank','noopener')}
 const KAT={ust:'Üst Giyim',alt:'Alt Giyim',aksesuar:'Aksesuar'};
+const STOK_UYARI_LIMITI=5; // stok adedi bu sayıya veya altına inince "Son X adet" uyarısı çıkar
 const TL=n=>'₺'+Number(n).toLocaleString('tr-TR',{maximumFractionDigits:2});
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl=u=>{if(!u)return '';try{const x=new URL(u,location.href);return /^https?:$/.test(x.protocol)?x.href:''}catch(e){return ''}};
@@ -141,12 +157,15 @@ const PH='<div class="placeholder"><svg viewBox="0 0 100 100" fill="none" stroke
 function card(p){
  const sale=p.fiyat!=null&&p.indirimliFiyat!=null&&Number(p.indirimliFiyat)<Number(p.fiyat);
  const pct=sale?Math.round((1-Number(p.indirimliFiyat)/Number(p.fiyat))*100):0;
- const out=p.stok===false, img=safeUrl(p.gorsel), link=safeUrl(p.link);
+ const sa=(p.stokAdet===null||p.stokAdet===undefined||p.stokAdet==='')?null:Number(p.stokAdet);
+ const out=p.stok===false||sa===0, low=!out&&sa!==null&&sa>0&&sa<=STOK_UYARI_LIMITI, link=safeUrl(p.link);
+ const imgs=(Array.isArray(p.gorsel)?p.gorsel:[p.gorsel]).map(safeUrl).filter(Boolean);
+ const media=imgs.length?'<div class="slides">'+imgs.map((u,i)=>'<img class="'+(i?'':'on')+'" src="'+esc(u)+'" alt="'+esc(p.ad)+'" loading="lazy">').join('')+'</div>'+(imgs.length>1?'<button class="nav prev" aria-label="Önceki fotoğraf">‹</button><button class="nav next" aria-label="Sonraki fotoğraf">›</button><div class="dots">'+imgs.map((_,i)=>'<i class="'+(i?'':'on')+'"></i>').join('')+'</div>':''):PH;
  const tag=out?'<span class="tag soldout">TÜKENDİ</span>':sale?'<span class="tag">%'+pct+' İNDİRİM</span>':p.etiket?'<span class="tag">'+esc(p.etiket)+'</span>':'';
  const price=p.fiyat==null?'<span class="price">Fiyat sor</span>':sale?'<span class="price"><s class="oldprice">'+TL(p.fiyat)+'</s> '+TL(p.indirimliFiyat)+'</span>':'<span class="price">'+TL(p.fiyat)+'</span>';
  const btn=out?'<button class="add" disabled>TÜKENDİ</button>':link?'<a class="add" href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">SİPARİŞ VER +</a>':'<button class="add" data-product="'+esc(p.ad)+'">SİPARİŞ VER +</button>';
  const sub=[KAT[p.kategori]||'',p.aciklama||''].filter(Boolean).join(' • ');
- return '<article class="product" data-cat="'+esc(p.kategori)+'" data-name="'+esc(p.ad)+'"><div class="productimg">'+(img?'<img src="'+esc(img)+'" alt="'+esc(p.ad)+'" loading="lazy">':PH)+tag+'</div><div class="productinfo"><h3>'+esc(p.ad)+'</h3><p>'+esc(sub)+'</p><div class="productbottom">'+price+btn+'</div></div></article>';
+ return '<article class="product" data-cat="'+esc(p.kategori)+'" data-name="'+esc(p.ad)+'"><div class="productimg">'+media+tag+'</div><div class="productinfo"><h3>'+esc(p.ad)+'</h3><p>'+esc(sub)+'</p>'+(low?'<p class="lowstock">● Son '+sa+' adet</p>':'')+'<div class="productbottom">'+price+btn+'</div></div></article>';
 }
 async function loadProducts(){
  const grid=document.getElementById('productGrid');
@@ -157,7 +176,11 @@ async function loadProducts(){
   products=[...grid.querySelectorAll('.product')];update();
  }catch(e){grid.innerHTML='<p class="empty">Ürünler yüklenemedi. Lütfen sayfayı yenileyin.</p>'}
 }
-document.getElementById('productGrid').addEventListener('click',e=>{const b=e.target.closest('button.add[data-product]');if(b)whatsapp('Merhaba PASAHANTR ekibi, '+b.dataset.product+' ürünü hakkında bilgi almak ve sipariş vermek istiyorum. Güncel fiyat, beden/renk seçenekleri ve stok durumu hakkında yardımcı olabilir misiniz? Teşekkür ederim.')});
+function slide(box,dir){const im=[...box.querySelectorAll('.slides img')],dt=[...box.querySelectorAll('.dots i')];if(im.length<2)return;const i=im.findIndex(x=>x.classList.contains('on')),n=(i+dir+im.length)%im.length;im.forEach((x,k)=>x.classList.toggle('on',k===n));dt.forEach((x,k)=>x.classList.toggle('on',k===n))}
+let tx=null;const gridEl=document.getElementById('productGrid');
+gridEl.addEventListener('touchstart',e=>{tx=e.target.closest('.productimg')?e.touches[0].clientX:null},{passive:true});
+gridEl.addEventListener('touchend',e=>{const box=e.target.closest('.productimg');if(tx===null||!box)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>40)slide(box,dx<0?1:-1)});
+document.getElementById('productGrid').addEventListener('click',e=>{const nav=e.target.closest('.nav');if(nav){slide(nav.closest('.productimg'),nav.classList.contains('next')?1:-1);return}const b=e.target.closest('button.add[data-product]');if(b)whatsapp('Merhaba PASAHANTR ekibi, '+b.dataset.product+' ürünü hakkında bilgi almak ve sipariş vermek istiyorum. Güncel fiyat, beden/renk seçenekleri ve stok durumu hakkında yardımcı olabilir misiniz? Teşekkür ederim.')});
 loadProducts();
 document.getElementById('contactBtn').addEventListener('click',e=>{e.preventDefault();whatsapp('Merhaba PASAHANTR ekibi, web siteniz üzerinden size ulaşıyorum. Ürünleriniz, güncel fiyatlar, beden ve renk seçenekleri ile sipariş süreci hakkında bilgi alabilir miyim? İlginiz için teşekkür ederim.')});
 </script>

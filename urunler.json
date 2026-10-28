@@ -1,0 +1,46 @@
+[
+  {
+    "ad": "Essential Oversize Tişört",
+    "kategori": "ust",
+    "aciklama": "Siyah / Beyaz",
+    "fiyat": null,
+    "indirimliFiyat": null,
+    "gorsel": "",
+    "etiket": "ÇOK SATAN",
+    "link": "",
+    "stok": true
+  },
+  {
+    "ad": "Premium Hoodie",
+    "kategori": "ust",
+    "aciklama": "Yeni sezon",
+    "fiyat": null,
+    "indirimliFiyat": null,
+    "gorsel": "",
+    "etiket": "YENİ",
+    "link": "",
+    "stok": true
+  },
+  {
+    "ad": "Relaxed Fit Eşofman",
+    "kategori": "alt",
+    "aciklama": "Rahat kalıp",
+    "fiyat": null,
+    "indirimliFiyat": null,
+    "gorsel": "",
+    "etiket": "",
+    "link": "",
+    "stok": true
+  },
+  {
+    "ad": "Minimal Şapka",
+    "kategori": "aksesuar",
+    "aciklama": "Günlük stil",
+    "fiyat": null,
+    "indirimliFiyat": null,
+    "gorsel": "",
+    "etiket": "",
+    "link": "",
+    "stok": true
+  }
+]

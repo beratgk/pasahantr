@@ -8,20 +8,43 @@
     "gorsel": "",
     "etiket": "ÇOK SATAN",
     "link": "",
-    "stok": true
+    "stok": true,
+    "stokAdet": 10
   },
   {
-    "ad": "Premium Kazak",
+    "ad": "Premium Hoodie",
     "kategori": "ust",
     "aciklama": "Yeni sezon",
-    "fiyat": 1000,
+    "fiyat": null,
     "indirimliFiyat": null,
-    "gorsel": [
-    "https://cdn.beymen.com/mnresize/596/830/productimages/h5yfumj0.zxy_IMG_01_2110099658926.jpg",
-    "https://cdn.beymen.com/mnresize/596/830/productimages/b0psohu1.ycu_IMG_01_2110106730843.jpg"
-    ],
+    "gorsel": "",
     "etiket": "YENİ",
-    "link": "https://www.beymen.com/tr/p_polo-ralph-lauren-kamel-orgu-dokulu-kazak_1626449",
-    "stok": true
+    "link": "",
+    "stok": true,
+    "stokAdet": 20
+  },
+  {
+    "ad": "Relaxed Fit Eşofman",
+    "kategori": "alt",
+    "aciklama": "Rahat kalıp",
+    "fiyat": null,
+    "indirimliFiyat": null,
+    "gorsel": "",
+    "etiket": "",
+    "link": "",
+    "stok": true,
+    "stokAdet": 30
+  },
+  {
+    "ad": "Minimal Şapka",
+    "kategori": "aksesuar",
+    "aciklama": "Günlük stil",
+    "fiyat": null,
+    "indirimliFiyat": null,
+    "gorsel": "",
+    "etiket": "",
+    "link": "",
+    "stok": true,
+    "stokAdet": 25
   }
 ]

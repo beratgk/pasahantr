@@ -216,7 +216,13 @@ const filters=[...document.querySelectorAll('.filter')], search=document.getElem
 function update(){const q=search.value.toLocaleLowerCase('tr');products.forEach(p=>{p.style.display=(category==='all'||p.dataset.cat===category)&&p.dataset.name.toLocaleLowerCase('tr').includes(q)?'':'none'})}
 filters.forEach(b=>b.addEventListener('click',()=>{filters.forEach(x=>x.classList.remove('active'));b.classList.add('active');category=b.dataset.cat;update()}));search.addEventListener('input',update);
 function whatsapp(message){if(!WHATSAPP_NUMBER){const n=document.getElementById('notice');n.classList.add('show');setTimeout(()=>n.classList.remove('show'),3000);return}window.open('https://wa.me/'+WHATSAPP_NUMBER+'?text='+encodeURIComponent(message),'_blank','noopener')}
-const KAT={kazak:'Kazak',hirka:'Hırka'};
+const KAT={kazak:'Kazak',hirka:'Hırka',ust:'Kazak',ust1:'Hırka'};
+function categoryKey(value){
+ const key=String(value||'').trim().toLocaleLowerCase('tr');
+ if(key==='ust'||key==='kazak')return 'kazak';
+ if(key==='ust1'||key==='hirka')return 'hirka';
+ return key;
+}
 const STOK_UYARI_LIMITI=5; // stok adedi bu sayıya veya altına inince "Son X adet" uyarısı çıkar
 const TL=n=>'₺'+Number(n).toLocaleString('tr-TR',{maximumFractionDigits:2});
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -238,13 +244,34 @@ function card(p,index){
  const shortSub=sub.length>125?sub.slice(0,122).trim()+'…':sub;
  const bed=(Array.isArray(p.bedenler)?p.bedenler:(typeof p.bedenler==='string'?p.bedenler.split(','):[])).map(x=>String(x).trim()).filter(Boolean);
  const sizes=(!out&&bed.length)?'<div class="sizes" aria-label="Mevcut bedenler">'+bed.map(x=>'<span>'+esc(x)+'</span>').join('')+'</div>':'';
- return '<article class="product" data-index="'+index+'" data-cat="'+esc(p.kategori)+'" data-name="'+esc(p.ad)+'"><div class="productimg">'+media+tag+'</div><div class="productinfo"><h3>'+esc(p.ad)+'</h3><p class="product-summary">'+esc(shortSub)+'</p><span class="product-more">ÜRÜN DETAYLARINI GÖR ↗</span>'+(low?'<p class="lowstock">● Son '+sa+' adet</p>':'')+''+sizes+'<div class="productbottom">'+price+btn+'</div></div></article>';
+ return '<article class="product" data-index="'+index+'" data-cat="'+esc(categoryKey(p.kategori))+'" data-name="'+esc(p.ad)+'"><div class="productimg">'+media+tag+'</div><div class="productinfo"><h3>'+esc(p.ad)+'</h3><p class="product-summary">'+esc(shortSub)+'</p><span class="product-more">ÜRÜN DETAYLARINI GÖR ↗</span>'+(low?'<p class="lowstock">● Son '+sa+' adet</p>':'')+''+sizes+'<div class="productbottom">'+price+btn+'</div></div></article>';
 }
 async function loadProducts(){
  const grid=document.getElementById('productGrid');
  try{
   const r=await fetch('urunler.json',{cache:'no-cache'});if(!r.ok)throw new Error(r.status);
   const list=await r.json();
+  /* Önizleme için örnek ürün: gerçek ürünler JSON dosyasından gelmeye devam eder. */
+  list.push({
+   ad:'PASAHANTR Test Ürünü – Örnek Hırka',
+   kategori:'hirka',
+   aciklama:[
+    'Bu bir deneme ürünüdür. Ürün detay penceresinin nasıl göründüğünü test etmek için eklenmiştir.',
+    'Ürün Özellikleri:',
+    '• Yumuşak dokulu triko kumaş',
+    '• Modern ve rahat kesim',
+    '• Günlük kombinlere uygun tasarım',
+    '• Örnek beden seçenekleri: S, M, L, XL',
+    '• Örnek stok bilgisi: 3 adet',
+    'Bu ürün gerçek satış ürünü değildir. Yayına almadan önce bu test kaydını kaldırın.'
+   ],
+   fiyat:1299,
+   indirimliFiyat:999,
+   bedenler:['S','M','L','XL'],
+   stokAdet:3,
+   stok:true,
+   etiket:'TEST ÜRÜNÜ'
+  });
   productData=list;
   grid.innerHTML=list.length?list.map((p,i)=>card(p,i)).join(''):'<p class="empty">Şu an gösterilecek ürün yok.</p>';
   products=[...grid.querySelectorAll('.product')];update();
@@ -286,8 +313,9 @@ function openProductDetails(index){
  const sizes=(Array.isArray(p.bedenler)?p.bedenler:(typeof p.bedenler==='string'?p.bedenler.split(','):[])).map(x=>String(x).trim()).filter(Boolean);
  document.getElementById('productModalSizes').innerHTML=sizes.length?'<strong style="width:100%;font-size:11px;color:#aaa">BEDEN SEÇENEKLERİ</strong>'+sizes.map(x=>'<span>'+esc(x)+'</span>').join(''):'';
  const order=document.getElementById('productModalOrder');
- order.disabled=p.stok===false||Number(p.stokAdet)===0;
- order.textContent=order.disabled?'ÜRÜN TÜKENDİ':'WHATSAPP’TAN SİPARİŞ VER ↗';
+ const noStock=p.stok===false||(p.stokAdet!==null&&p.stokAdet!==undefined&&p.stokAdet!==''&&Number(p.stokAdet)===0);
+ order.disabled=noStock;
+ order.textContent=order.disabled?'ÜRÜN TÜKENDİ':(safeUrl(p.link)?"SHOPIER'DAN SİPARİŞ VER ↗":'WHATSAPP’TAN SİPARİŞ VER ↗');
  productModal.classList.add('open');productModal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';modalClose.focus();
 }
 function closeProductDetails(){
@@ -297,8 +325,10 @@ modalClose.addEventListener('click',closeProductDetails);
 productModal.addEventListener('click',e=>{if(e.target===productModal)closeProductDetails()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&productModal.classList.contains('open'))closeProductDetails()});
 document.getElementById('productModalOrder').addEventListener('click',()=>{
- if(!activeModalProduct||activeModalProduct.stok===false||Number(activeModalProduct.stokAdet)===0)return;
+ if(!activeModalProduct||activeModalProduct.stok===false||(activeModalProduct.stokAdet!==null&&activeModalProduct.stokAdet!==undefined&&activeModalProduct.stokAdet!==''&&Number(activeModalProduct.stokAdet)===0))return;
  const p=activeModalProduct;
+ const productLink=safeUrl(p.link);
+ if(productLink){window.open(productLink,'_blank','noopener');return;}
  whatsapp('Merhaba PASAHANTR ekibi, "'+(p.ad||'')+'" ürünü hakkında bilgi almak ve sipariş vermek istiyorum. Güncel fiyat, beden/renk seçenekleri ve stok durumu hakkında yardımcı olabilir misiniz? Teşekkür ederim.');
 });
 

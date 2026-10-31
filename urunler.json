@@ -19,7 +19,7 @@
   "Zarif tasarımı ve dikkat çekici detaylarıyla günlük ve klasik kombinlerinize şıklık katacak özel bir parça.",
   "",
   "Orijinaliyle bire bir replikadır."
-],
+  ],
     "bedenler": ["S", "L", "XL", "XXL"],
     "fiyat": 1750,
     "indirimliFiyat": 1550,
@@ -87,7 +87,7 @@
     "stok": true,
     "stokAdet": 5
   },
-      {
+  {
     "ad": "Louis Vuitton Triko Kazak",
     "kategori": "ust",
     "aciklama": [
@@ -115,7 +115,7 @@
     "stok": true,
     "stokAdet": 5
   },
-        {
+  {
     "ad": "Polo Ralph Lauren Triko Kazak",
     "kategori": "ust",
     "aciklama": [

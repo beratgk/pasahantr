@@ -4,17 +4,20 @@
     "kategori": "ust1",
     "aciklama": [
   "Burberry Fermuarlı Triko Hırka",
-  "Burberry özel tasarım",
-  "Siyah renk",
-  "Ön kısımda zarif logo işlemesi",
-  "Tam boy fermuarlı tasarım",
-  "Baklava desenli triko örgü",
-  "Dik yaka detayı",
-  "Yan cepler",
-  "Ribanalı kol ve bel detayları",
-  "Şık ve modern görünüm",
-  "Etiketli ürün",
+  "",
+  "• Burberry özel tasarım",
+  "• Siyah renk",
+  "• Ön kısımda zarif logo işlemesi",
+  "•Tam boy fermuarlı tasarım",
+  "• Baklava desenli triko örgü",
+  "• Dik yaka detayı",
+  "• Yan cepler",
+  "• Ribanalı kol ve bel detayları",
+  "• Şık ve modern görünüm",
+  "• Etiketli ürün",
+  "",
   "Zarif tasarımı ve dikkat çekici detaylarıyla günlük ve klasik kombinlerinize şıklık katacak özel bir parça.",
+  "",
   "Orijinaliyle bire bir replikadır."
 ],
     "fiyat": 1750,
@@ -23,6 +26,6 @@
     "etiket": "YENİ",
     "link": "https://www.shopier.com/pasahantr/52434859",
     "stok": true,
-    "stokAdet": null
+    "stokAdet": true
   }
 ]

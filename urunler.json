@@ -10,41 +10,5 @@
     "link": "",
     "stok": true,
     "stokAdet": 10
-  },
-  {
-    "ad": "Premium Hoodie",
-    "kategori": "ust",
-    "aciklama": "Yeni sezon",
-    "fiyat": null,
-    "indirimliFiyat": null,
-    "gorsel": "",
-    "etiket": "YENİ",
-    "link": "",
-    "stok": true,
-    "stokAdet": 20
-  },
-  {
-    "ad": "Relaxed Fit Eşofman",
-    "kategori": "alt",
-    "aciklama": "Rahat kalıp",
-    "fiyat": null,
-    "indirimliFiyat": null,
-    "gorsel": "",
-    "etiket": "",
-    "link": "",
-    "stok": true,
-    "stokAdet": 30
-  },
-  {
-    "ad": "Minimal Şapka",
-    "kategori": "aksesuar",
-    "aciklama": "Günlük stil",
-    "fiyat": null,
-    "indirimliFiyat": null,
-    "gorsel": "",
-    "etiket": "",
-    "link": "",
-    "stok": true,
-    "stokAdet": 25
   }
 ]

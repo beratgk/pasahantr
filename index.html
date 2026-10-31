@@ -251,27 +251,6 @@ async function loadProducts(){
  try{
   const r=await fetch('urunler.json',{cache:'no-cache'});if(!r.ok)throw new Error(r.status);
   const list=await r.json();
-  /* Önizleme için örnek ürün: gerçek ürünler JSON dosyasından gelmeye devam eder. */
-  list.push({
-   ad:'PASAHANTR Test Ürünü – Örnek Hırka',
-   kategori:'hirka',
-   aciklama:[
-    'Bu bir deneme ürünüdür. Ürün detay penceresinin nasıl göründüğünü test etmek için eklenmiştir.',
-    'Ürün Özellikleri:',
-    '• Yumuşak dokulu triko kumaş',
-    '• Modern ve rahat kesim',
-    '• Günlük kombinlere uygun tasarım',
-    '• Örnek beden seçenekleri: S, M, L, XL',
-    '• Örnek stok bilgisi: 3 adet',
-    'Bu ürün gerçek satış ürünü değildir. Yayına almadan önce bu test kaydını kaldırın.'
-   ],
-   fiyat:1299,
-   indirimliFiyat:999,
-   bedenler:['S','M','L','XL'],
-   stokAdet:3,
-   stok:true,
-   etiket:'TEST ÜRÜNÜ'
-  });
   productData=list;
   grid.innerHTML=list.length?list.map((p,i)=>card(p,i)).join(''):'<p class="empty">Şu an gösterilecek ürün yok.</p>';
   products=[...grid.querySelectorAll('.product')];update();

@@ -23,7 +23,6 @@
     "bedenler": [
       "S",
       "L",
-      "XL",
       "XXL"
     ],
     "fiyat": 1450,
@@ -38,7 +37,7 @@
     "etiket": "YENİ",
     "link": "https://www.shopier.com/pasahantr/52434859",
     "stok": true,
-    "stokAdet": 5
+    "stokAdet": 4
   },
   {
     "ad": "Dior Triko Kazak",
@@ -63,8 +62,7 @@
       "S",
       "M",
       "L",
-      "XL",
-      "XXL"
+      "XL"
     ],
     "fiyat": 1450,
     "indirimliFiyat": 1040,
@@ -78,7 +76,7 @@
     "etiket": "YENİ",
     "link": "https://www.shopier.com/pasahantr/52434729",
     "stok": true,
-    "stokAdet": 5
+    "stokAdet": 4
   },
   {
     "ad": "Guess Jeans Triko Kazak",
